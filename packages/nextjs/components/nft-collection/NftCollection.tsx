@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
-import { Abi } from "abitype";
-import { BigNumber } from "ethers";
 import { createPublicClient, getContract, http } from "viem";
-import { hardhat } from "viem/chains";
-import { useAccount, usePublicClient, useWalletClient } from "wagmi";
-import { GetWalletClientResult } from "wagmi/actions";
+import { sepolia } from "viem/chains";
+import { useAccount } from "wagmi";
+import { Spinner } from "~~/components/Spinner";
 import contracts from "~~/generated/deployedContracts";
 // import { hardhat } from "wagmi/chains";
-import { useDeployedContractInfo, useScaffoldContract } from "~~/hooks/scaffold-eth";
 import { useScaffoldContractRead } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 
@@ -28,23 +25,20 @@ export interface Collectible {
 }
 
 export const NftCollection = () => {
-  const client = usePublicClient({ chainId: hardhat.id });
-
   const { address: connectedAddress } = useAccount();
-  const { data: walletClient } = useWalletClient();
 
   const [allCollectiblesLoading, setAllCollectiblesLoading] = useState(false);
   const [myAllCollectibles, setMyAllCollectibles] = useState<Collectible[]>([]);
 
   // 1. Create contract instance
   const publicClient = createPublicClient({
-    chain: hardhat,
+    chain: sepolia,
     transport: http(),
   });
 
   const nftContract = getContract({
-    address: contracts[31337][0].contracts["ColorCityNFT"].address,
-    abi: contracts[31337][0].contracts["ColorCityNFT"].abi,
+    address: contracts[11155111][0].contracts["ColorCityNFT"].address,
+    abi: contracts[11155111][0].contracts["ColorCityNFT"].abi,
     publicClient,
   });
 
@@ -115,6 +109,14 @@ export const NftCollection = () => {
 
     updateMyCollectibles();
   }, [connectedAddress, myTotalBalance]);
+
+  if (allCollectiblesLoading) {
+    return (
+      <div className="flex justify-center items-center mt-14">
+        <Spinner width="50px" height="50px" />
+      </div>
+    );
+  }
 
   return (
     <>

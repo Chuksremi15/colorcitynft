@@ -1,11 +1,11 @@
 const contracts = {
-  31337: [
+  11155111: [
     {
-      chainId: "31337",
-      name: "localhost",
+      chainId: "11155111",
+      name: "sepolia",
       contracts: {
         ColorCityNFT: {
-          address: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+          address: "0x3B7d0621b7E0695ebd52795914d9A57DC6044F4a",
           abi: [
             {
               inputs: [],
