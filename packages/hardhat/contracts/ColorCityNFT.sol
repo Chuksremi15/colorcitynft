@@ -29,13 +29,9 @@ contract ColorCityNFT is ERC721, Ownable {
 	mapping(uint256 => bytes3) public primaryColor;
 	mapping(uint256 => bytes3) public secondaryColor;
 
-	uint256 mintDeadline = block.timestamp + 2 weeks;
-
 	uint256 mintFee = 0.05 ether;
 
 	function mintItem() public payable returns (uint256) {
-		require(block.timestamp < mintDeadline, "DONE MINTING");
-
 		require(msg.value == mintFee, "Eth must be equal to mint fee");
 
 		_tokenIds.increment();
@@ -52,7 +48,11 @@ contract ColorCityNFT is ERC721, Ownable {
 		);
 
 		bytes32 predictableRandomSecondary = keccak256(
-			abi.encodePacked(block.timestamp, address(this), msg.sender)
+			abi.encodePacked(
+				blockhash(block.number - 2),
+				msg.sender,
+				address(this)
+			)
 		);
 
 		primaryColor[id] =
@@ -95,7 +95,7 @@ contract ColorCityNFT is ERC721, Ownable {
 								name,
 								'", "description":"',
 								description,
-								'", "external_url":"https://burnyboys.com/token/',
+								'", "external_url":"https://colorcity-chuksremi.vercel.app/token/',
 								id.toString(),
 								'", "attributes": [{"trait_type": "primary_color", "value": "#',
 								primaryColor[id].toColor(),

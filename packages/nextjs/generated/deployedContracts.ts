@@ -5,7 +5,7 @@ const contracts = {
       name: "sepolia",
       contracts: {
         ColorCityNFT: {
-          address: "0x3B7d0621b7E0695ebd52795914d9A57DC6044F4a",
+          address: "0xef2D6f412Ff49DEa9b40663bFBc421eB69220f0d",
           abi: [
             {
               inputs: [],
